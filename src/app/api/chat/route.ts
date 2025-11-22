@@ -23,7 +23,8 @@ export async function POST(request: NextRequest) {
 
         // Initialize Gemini
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+        // Use gemini-pro (stable) instead of gemini-1.5-pro (may not be available)
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
         // Build conversation context
         const systemPrompt = `You are "The Chief" - the AI brain of Chieftamate Super App, a powerful multi-purpose platform built and trained by Terrence Boykin.

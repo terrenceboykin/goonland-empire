@@ -8,11 +8,17 @@
 ✅ Environment: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY exists
 ✅ Environment: GOOGLE_GEMINI_API_KEY is valid format
 ✅ Environment: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is valid format
+⚠️  Server not running, skipping endpoint test
 ✅ Endpoint: /api/analyze exists
+⚠️  Server not running, skipping endpoint test
 ✅ Endpoint: /api/chat exists
+⚠️  Server not running, skipping endpoint test
 ✅ Endpoint: /api/leads exists
+⚠️  Server not running, skipping endpoint test
 ✅ Endpoint: Homepage loads
+⚠️  Server not running, skipping endpoint test
 ✅ Endpoint: /storm page loads
+⚠️  Server not running, skipping endpoint test
 ✅ Endpoint: /super-dashboard loads
 ✅ Google Maps: API key format valid
 ✅ Gemini: API key format valid

@@ -24,7 +24,8 @@ export async function POST(request: NextRequest) {
 
         // Initialize Gemini
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+        // Use gemini-pro (stable) instead of gemini-1.5-pro (may not be available)
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
         const prompt = `
       ACT AS AN EXPERT INSURANCE ADJUSTER AND CONSTRUCTION ESTIMATOR.

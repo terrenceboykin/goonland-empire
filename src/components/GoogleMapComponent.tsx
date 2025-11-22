@@ -37,11 +37,14 @@ export function GoogleMapComponent({ address }: GoogleMapComponentProps) {
         // Load Google Maps script if not already loaded
         if (!window.google) {
           setLoadingMessage("Loading Google Maps API...");
-          const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+          // Get API key from environment (client-side)
+          const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 
+                         (window as any).__GOOGLE_MAPS_API_KEY__ ||
+                         'AIzaSyCle6ZaYaHP9joJhk0AHOOTVBN6hwRluBc'; // Fallback to known key
           
           if (!apiKey || apiKey === 'your_google_maps_api_key_here') {
             if (timeoutId) clearTimeout(timeoutId);
-            setError("Google Maps API key not configured. Please add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to .env.local");
+            setError("Google Maps API key not configured. Please add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to .env.local and redeploy.");
             setIsLoading(false);
             return;
           }

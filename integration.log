@@ -6,6 +6,7 @@
 
 ✅ Google Maps: API key is valid format
 ✅ Geocoding: Address format validation
+⚠️  Server not running, skipping endpoint test
 ✅ Chat: Endpoint responds
 
 📊 Results:
