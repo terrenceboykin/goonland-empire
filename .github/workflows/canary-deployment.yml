@@ -1,0 +1,40 @@
+name: Canary Deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  canary-deploy:
+    name: Canary Deployment & Health Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Canary
+        run: |
+          echo "Deploying to canary environment..."
+          # Add your canary deployment command here
+          # Example: vercel --prod --target canary
+      
+      - name: Wait for deployment
+        run: sleep 30
+      
+      - name: Health Check (10 minutes)
+        run: |
+          echo "Running health checks for 10 minutes..."
+          for i in {1..20}; do
+            echo "Health check $i/20..."
+            # Add your health check command here
+            # Example: curl -f https://canary.your-app.com/health || exit 1
+            sleep 30
+          done
+          echo "Health checks passed!"
+      
+      - name: Deploy to Production
+        if: success()
+        run: |
+          echo "Canary health checks passed. Deploying to production..."
+          # Add your production deployment command here
+

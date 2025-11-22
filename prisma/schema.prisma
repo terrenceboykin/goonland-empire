@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String?
+  company       String?
+  role          String   @default("contractor") // contractor, admin, carrier
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  estimates     Estimate[]
+  leads         Lead[]
+  subscriptions Subscription[]
+}
+
+model Estimate {
+  id            String   @id @default(cuid())
+  userId        String
+  address       String
+  customerName  String?
+  jobId         String   @unique
+  summary       String
+  material      String
+  damage        String   // JSON array
+  subtotal      Float
+  overheadProfit Float
+  total         Float
+  status        String   @default("draft") // draft, sent, approved, rejected
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  user          User     @relation(fields: [userId], references: [id])
+  lineItems     LineItem[]
+  
+  @@index([userId])
+  @@index([jobId])
+}
+
+model LineItem {
+  id            String   @id @default(cuid())
+  estimateId    String
+  category      String
+  description   String
+  xactimateCode String?
+  quantity      Float
+  unit          String
+  unitPrice     Float
+  total         Float
+  notes         String?
+  
+  estimate      Estimate @relation(fields: [estimateId], references: [id], onDelete: Cascade)
+  
+  @@index([estimateId])
+}
+
+model Lead {
+  id            String   @id @default(cuid())
+  address       String
+  city          String
+  state         String
+  zipCode       String
+  lat           Float?
+  lng           Float?
+  damageType    String   // JSON array
+  damageScore   Int      // 1-10
+  estimatedCostMin Float
+  estimatedCostMax Float
+  stormEvent    String?
+  detectedAt    DateTime @default(now())
+  status        String   @default("new") // new, contacted, converted, lost
+  assignedTo    String?
+  notes         String?
+  contactInfo   String?   // JSON
+  
+  user          User?    @relation(fields: [assignedTo], references: [id])
+  
+  @@index([status])
+  @@index([assignedTo])
+  @@index([detectedAt])
+}
+
+model StormEvent {
+  id            String   @id @default(cuid())
+  name          String
+  type          String   // hail, wind, tornado, etc.
+  startDate     DateTime
+  endDate       DateTime?
+  affectedAreas String   // JSON array of coordinates
+  leadsGenerated Int     @default(0)
+  createdAt     DateTime @default(now())
+  
+  @@index([startDate])
+}
+
+model Subscription {
+  id            String   @id @default(cuid())
+  userId        String
+  plan          String   // basic, pro, enterprise
+  status        String   @default("active") // active, cancelled, expired
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  stripeCustomerId String?
+  stripeSubscriptionId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  user          User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([status])
+}
+
