@@ -11,12 +11,13 @@
     "test:integration": "node scripts/integration-test.js",
     "test:smoke": "node scripts/smoke-test.js",
     "smoke": "node scripts/smoke-test.js",
-    "validate": "npm run build && npm run smoke && npm run test:integration"
+    "validate": "npm run build && npm run smoke && npm run test:integration",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@next/third-parties": "^16.0.3",
-    "@prisma/client": "^7.0.0",
+    "@prisma/client": "6.19.0",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.4",
@@ -26,7 +27,7 @@
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.554.0",
     "next": "16.0.3",
-    "prisma": "^7.0.0",
+    "prisma": "6.19.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "tailwind-merge": "^3.4.0"
