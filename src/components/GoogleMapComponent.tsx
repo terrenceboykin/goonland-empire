@@ -39,8 +39,7 @@ export function GoogleMapComponent({ address }: GoogleMapComponentProps) {
           setLoadingMessage("Loading Google Maps API...");
           // Get API key from environment (client-side)
           const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 
-                         (window as any).__GOOGLE_MAPS_API_KEY__ ||
-                         'AIzaSyCle6ZaYaHP9joJhk0AHOOTVBN6hwRluBc'; // Fallback to known key
+                         (window as any).__GOOGLE_MAPS_API_KEY__;
           
           if (!apiKey || apiKey === 'your_google_maps_api_key_here') {
             if (timeoutId) clearTimeout(timeoutId);
@@ -50,7 +49,7 @@ export function GoogleMapComponent({ address }: GoogleMapComponentProps) {
           }
           
           const script = document.createElement("script");
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry,drawing`;
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,geometry,drawing`;
           script.async = true;
           script.defer = true;
           

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { GoogleMapComponent } from "@/components/GoogleMapComponent";
 import { ChatInterface } from "@/components/ChatInterface";
 import { AddressAutocomplete } from "@/components/AddressAutocomplete";
-import Script from "next/script";
+
 
 import ResultsView from "@/components/ResultsView";
 
@@ -50,10 +50,6 @@ export default function StormPage() {
 
     return (
         <div className="min-h-screen bg-background text-foreground flex flex-col">
-            <Script
-                src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-                strategy="beforeInteractive"
-            />
             {/* Header */}
             <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
                 <div className="container flex h-16 items-center justify-between px-4">
