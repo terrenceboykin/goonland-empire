@@ -47,13 +47,19 @@ export default function ResultsPage() {
 
                 return () => clearInterval(interval);
             } catch (err) {
-                setError("Failed to parse analysis data");
+                // Don't crash - show helpful error
+                console.error("Results page error:", err);
+                setError("Failed to load analysis data. Please try uploading again.");
                 setLoading(false);
             }
         } else {
-            // No data found, redirect to home
-            setError("No analysis data found. Please upload images first.");
-            setTimeout(() => router.push("/"), 2000);
+            // No data found - don't crash, redirect gracefully
+            setError("No analysis data found. Please upload photos first.");
+            setLoading(false);
+            // Redirect after showing message
+            setTimeout(() => {
+                router.push("/storm");
+            }, 3000);
         }
     }, [router]);
 

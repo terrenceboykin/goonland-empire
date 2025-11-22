@@ -112,8 +112,13 @@ When users ask "what can you do?" or "ask me what I can do", list ALL these capa
 
     } catch (error: any) {
         console.error("Chat API Error:", error);
+        
+        // Don't crash - return helpful error
         return NextResponse.json(
-            { error: error.message || "Failed to process chat message" },
+            { 
+                error: error.message || "Chat is temporarily unavailable. Please try again.",
+                retry: true
+            },
             { status: 500 }
         );
     }

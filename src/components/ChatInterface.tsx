@@ -71,9 +71,10 @@ export function ChatInterface() {
             setMessages((prev) => [...prev, assistantMessage]);
         } catch (error) {
             console.error("Chat error:", error);
+            // Don't crash - show helpful error message
             const errorMessage: Message = {
                 role: "assistant",
-                content: "Sorry, I encountered an error. Please try again.",
+                content: "Sorry, I encountered an error. Please try again. If the problem persists, refresh the page.",
                 timestamp: new Date().toISOString(),
             };
             setMessages((prev) => [...prev, errorMessage]);

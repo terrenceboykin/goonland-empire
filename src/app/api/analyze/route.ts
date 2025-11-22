@@ -1,15 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 
-import { getGeocode, getSolarData, getSatelliteImage } from "@/lib/solar-api";
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
-        const formData = await request.formData();
-        const files = formData.getAll("files") as File[];
-        const address = formData.get("address") as string | null;
-
         const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+
         if (!apiKey) {
             return NextResponse.json(
                 { error: "GOOGLE_GEMINI_API_KEY is not set" },
@@ -17,74 +12,25 @@ export async function POST(request: Request) {
             );
         }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+        const formData = await request.formData();
+        const files = formData.getAll("files") as File[];
 
-        let promptContext = "";
-        let imageParts: any[] = [];
-
-        if (address) {
-            // SATELLITE MODE
-            try {
-                const location = await getGeocode(address);
-                const solarData = await getSolarData(location.lat, location.lng);
-                const satelliteImageUrl = await getSatelliteImage(location.lat, location.lng);
-
-                // Fetch the satellite image to pass to Gemini
-                const imageResp = await fetch(satelliteImageUrl);
-                const imageBuffer = await imageResp.arrayBuffer();
-                const base64Image = Buffer.from(imageBuffer).toString("base64");
-
-                imageParts = [{
-                    inlineData: {
-                        data: base64Image,
-                        mimeType: "image/png",
-                    },
-                }];
-
-                promptContext = `
-                ANALYSIS CONTEXT:
-                Address: ${address}
-                Roof Data (from Google Solar API):
-                - Max Array Area: ${solarData.solarPotential?.maxArrayAreaMeters2 || "N/A"} m2
-                - Max Sunshine Hours: ${solarData.solarPotential?.maxSunshineHoursPerYear || "N/A"}
-                - Roof Segment Stats: ${JSON.stringify(solarData.solarPotential?.roofSegmentStats || [])}
-                
-                Use this data to calculate precise measurements (Square count).
-                `;
-            } catch (e) {
-                console.error("Satellite Data Error:", e);
-                // Fallback if solar API fails or key is invalid, just proceed with generic prompt
-                promptContext = `Could not fetch live solar data for ${address}. Estimate based on visual only.`;
-            }
-        } else if (files.length > 0) {
-            // PHOTO UPLOAD MODE
-            imageParts = await Promise.all(
-                files.map(async (file) => {
-                    const bytes = await file.arrayBuffer();
-                    const buffer = Buffer.from(bytes);
-                    return {
-                        inlineData: {
-                            data: buffer.toString("base64"),
-                            mimeType: file.type,
-                        },
-                    };
-                })
-            );
-        } else {
+        if (!files || files.length === 0) {
             return NextResponse.json(
-                { error: "No files or address provided" },
+                { error: "No files uploaded" },
                 { status: 400 }
             );
         }
 
-        const prompt = `
-      ACT AS AN EXPERT INSURANCE ADJUSTER (XACTIMATE CERTIFIED).
-      
-      ${promptContext}
+        // Initialize Gemini
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
+        const prompt = `
+      ACT AS AN EXPERT INSURANCE ADJUSTER AND CONSTRUCTION ESTIMATOR.
+      
       Analyze these roof images (or satellite view) to create a PRECISE construction estimate.
-      You MUST use standard Xactimate codes (e.g., RFG 300, RFG 300S, RFG DRIP).
+      Use standard industry codes (e.g., RFG 300, RFG 300S, RFG DRIP) for compatibility, but this is a STANDALONE system - users don't need Xactimate.
       
       CRITICAL ANALYSIS STEPS:
       1. **Identify Material:** Asphalt Shingles (Laminated/3-Tab), Tile, Metal, etc.
@@ -132,28 +78,38 @@ export async function POST(request: Request) {
       BE AGGRESSIVE WITH SUPPLEMENTS. IF IN DOUBT, ADD IT AS A SUPPLEMENT ITEM.
     `;
 
+        // Process images for Gemini
+        const imageParts = await Promise.all(
+            files.map(async (file) => {
+                const arrayBuffer = await file.arrayBuffer();
+                return {
+                    inlineData: {
+                        data: Buffer.from(arrayBuffer).toString("base64"),
+                        mimeType: file.type,
+                    },
+                };
+            })
+        );
+
         const result = await model.generateContent([prompt, ...imageParts]);
-        const responseText = result.response.text();
+        const response = await result.response;
+        const text = response.text();
 
-        // Clean up markdown code blocks if present
-        const jsonString = responseText.replace(/```json\n|\n```/g, "").trim();
+        // Clean up JSON if needed (remove markdown code blocks)
+        const jsonStr = text.replace(/```json\n|\n```/g, "");
+        const data = JSON.parse(jsonStr);
 
-        try {
-            const data = JSON.parse(jsonString);
-            return NextResponse.json(data);
-        } catch (e) {
-            console.error("JSON Parse Error:", e);
-            console.log("Raw Response:", responseText);
-            return NextResponse.json(
-                { error: "Failed to parse AI response" },
-                { status: 500 }
-            );
-        }
+        return NextResponse.json(data);
 
     } catch (error: any) {
-        console.error("Error processing request:", error);
+        console.error("Analysis error:", error);
+        
+        // Don't crash - return helpful error that user can recover from
         return NextResponse.json(
-            { error: error.message || "Internal Server Error" },
+            { 
+                error: error.message || "Failed to analyze images. Please check your images and try again.",
+                retry: true
+            },
             { status: 500 }
         );
     }

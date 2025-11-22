@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { GoogleMapComponent } from "@/components/GoogleMapComponent";
 import { ChatInterface } from "@/components/ChatInterface";
+import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 
 import ResultsView from "@/components/ResultsView";
 
@@ -92,32 +93,10 @@ export default function StormPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <div className="flex gap-2">
-                            <input
-                                type="text"
-                                placeholder="Enter full address (e.g., 123 Main St, Chicago, IL)"
-                                value={selectedAddress}
-                                onChange={(e) => setSelectedAddress(e.target.value)}
-                                onKeyPress={(e) => {
-                                    if (e.key === "Enter" && selectedAddress) {
-                                        setShowMap(true);
-                                    }
-                                }}
-                                className="flex-1 px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                            />
-                            <p className="text-xs text-muted-foreground mt-1">
-                                💡 Tip: Include city and state for better results (e.g., "123 Main St, Chicago, IL")
-                            </p>
-                            <Button
-                                onClick={() => {
-                                    if (selectedAddress) setShowMap(true);
-                                }}
-                                disabled={!selectedAddress}
-                            >
-                                <MapPin className="h-4 w-4 mr-2" />
-                                View Satellite
-                            </Button>
-                        </div>
+                        <AddressAutocomplete
+                            onAddressSelect={(address) => setSelectedAddress(address)}
+                            onViewSatellite={() => setShowMap(true)}
+                        />
                         {showMap && selectedAddress && (
                             <div className="space-y-4">
                                 <div className="h-[400px] w-full rounded-lg overflow-hidden border border-border">
