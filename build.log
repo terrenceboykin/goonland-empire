@@ -13,34 +13,34 @@
    - Environments: .env.local
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 2.2s
+ ✓ Compiled successfully in 3.7s
    Running TypeScript ...
    Collecting page data using 7 workers ...
-   Generating static pages using 7 workers (0/17) ...
-   Generating static pages using 7 workers (4/17) 
-   Generating static pages using 7 workers (8/17) 
-   Generating static pages using 7 workers (12/17) 
- ✓ Generating static pages using 7 workers (17/17) in 468.2ms
-   Finalizing page optimization ...
+Error: Failed to load external module @prisma/client: Error: Cannot find module '/Users/terrenceboykin/.gemini/antigravity/scratch/odanny-boy-xactimate-killer/node_modules/@prisma/client/runtime/library.js'
+    at Context.externalRequire [as x] (.next/server/chunks/[turbopack]_runtime.js:514:15)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__587d3877._.js:1:1017)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:738:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:228:20)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__587d3877._.js:1:1369)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at instantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:743:12)
+    at getOrInstantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:756:12)
+    at Object.m (.next/server/chunks/[turbopack]_runtime.js:765:18)
+Error: Failed to load external module @prisma/client: Error: Cannot find module '/Users/terrenceboykin/.gemini/antigravity/scratch/odanny-boy-xactimate-killer/node_modules/@prisma/client/runtime/library.js'
+    at Context.externalRequire [as x] (.next/server/chunks/[turbopack]_runtime.js:514:15)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__a15ef61e._.js:1:1017)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:738:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:228:20)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__a15ef61e._.js:1:1369)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:715:9)
+    at instantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:743:12)
+    at getOrInstantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:756:12)
+    at Object.m (.next/server/chunks/[turbopack]_runtime.js:765:18)
 
-Route (app)
-┌ ○ /
-├ ○ /_not-found
-├ ƒ /api/analyze
-├ ƒ /api/chat
-├ ƒ /api/leads
-├ ƒ /api/send-link
-├ ƒ /api/storm-monitor
-├ ○ /chat
-├ ○ /leads
-├ ○ /life
-├ ○ /results
-├ ○ /send-link
-├ ○ /storm
-├ ○ /studio
-└ ○ /super-dashboard
-
-
-○  (Static)   prerendered as static content
-ƒ  (Dynamic)  server-rendered on demand
-
+> Build error occurred
+Error: Failed to collect page data for /api/storm-monitor
+    at ignore-listed frames {
+  type: 'Error'
+}

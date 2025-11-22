@@ -10,7 +10,7 @@
 ✅ Environment: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is valid format
 ✅ Endpoint: /api/analyze exists
 ✅ Endpoint: /api/chat exists
-❌ Endpoint: /api/leads exists: Status 400
+✅ Endpoint: /api/leads exists
 ✅ Endpoint: Homepage loads
 ✅ Endpoint: /storm page loads
 ✅ Endpoint: /super-dashboard loads
@@ -18,8 +18,7 @@
 ✅ Gemini: API key format valid
 
 📊 Results:
-✅ Passed: 11
-❌ Failed: 1
+✅ Passed: 12
+❌ Failed: 0
 
-❌ Errors:
-  - Endpoint: /api/leads exists: Status 400
+✅ All smoke tests passed!
