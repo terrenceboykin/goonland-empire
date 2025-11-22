@@ -15,6 +15,10 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@google-cloud/speech": "^7.2.1",
+    "@google-cloud/text-to-speech": "^6.4.0",
+    "@google-cloud/vertexai": "^1.10.0",
+    "@google-cloud/vision": "^5.3.4",
     "@google/generative-ai": "^0.24.1",
     "@next/third-parties": "^16.0.3",
     "@prisma/client": "6.19.0",
