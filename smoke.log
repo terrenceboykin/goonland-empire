@@ -1,0 +1,25 @@
+
+> chieftamate@1.0.0 smoke
+> node scripts/smoke-test.js
+
+🔥 Running Smoke Tests...
+
+✅ Environment: GOOGLE_GEMINI_API_KEY exists
+✅ Environment: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY exists
+✅ Environment: GOOGLE_GEMINI_API_KEY is valid format
+✅ Environment: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is valid format
+✅ Endpoint: /api/analyze exists
+✅ Endpoint: /api/chat exists
+❌ Endpoint: /api/leads exists: Status 400
+✅ Endpoint: Homepage loads
+✅ Endpoint: /storm page loads
+✅ Endpoint: /super-dashboard loads
+✅ Google Maps: API key format valid
+✅ Gemini: API key format valid
+
+📊 Results:
+✅ Passed: 11
+❌ Failed: 1
+
+❌ Errors:
+  - Endpoint: /api/leads exists: Status 400
