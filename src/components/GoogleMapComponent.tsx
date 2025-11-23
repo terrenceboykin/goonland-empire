@@ -49,7 +49,7 @@ export function GoogleMapComponent({ address }: GoogleMapComponentProps) {
           }
           
           const script = document.createElement("script");
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,geometry,drawing`;
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry,drawing`;
           script.async = true;
           script.defer = true;
           
