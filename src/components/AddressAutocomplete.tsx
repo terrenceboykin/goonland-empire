@@ -53,7 +53,12 @@ export function AddressAutocomplete({ onAddressSelect, onViewSatellite }: Addres
                 className="flex-1 px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <Button
-                onClick={onViewSatellite}
+                onClick={() => {
+                    if (selectedAddress) {
+                        onAddressSelect(selectedAddress);
+                        onViewSatellite();
+                    }
+                }}
                 disabled={!selectedAddress}
             >
                 <MapPin className="h-4 w-4 mr-2" />
