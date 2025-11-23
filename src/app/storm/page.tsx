@@ -13,6 +13,7 @@ import Script from "next/script";
 import ResultsView from "@/components/ResultsView";
 
 export default function StormPage() {
+    const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [showMap, setShowMap] = useState(false);
@@ -51,7 +52,7 @@ export default function StormPage() {
     return (
         <div className="min-h-screen bg-background text-foreground flex flex-col">
             <Script
-                src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+                src={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`}
                 strategy="beforeInteractive"
             />
             {/* Header */}
